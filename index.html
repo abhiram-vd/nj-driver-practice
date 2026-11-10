@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#101827" />
+  <meta name="description" content="Unlimited New Jersey driver knowledge test practice based on the 2026 NJ Driver Manual." />
+  <title>NJ Driver Knowledge Practice</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="NJ Driver Practice home" id="brand-home">
+        <span class="brand-mark">NJ</span>
+        <span class="brand-copy">
+          <strong>DRIVER PRACTICE</strong>
+          <small>NEW JERSEY · 2026 MANUAL</small>
+        </span>
+      </a>
+      <div class="topbar-right">
+        <span class="source-pill"><span class="source-dot"></span> MANUAL-BASED</span>
+        <button class="text-button" id="home-link" type="button">Home</button>
+      </div>
+    </header>
+
+    <main id="app" class="main-content" aria-live="polite">
+      <section class="welcome-view" id="welcome-view">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> NEW JERSEY MVC · KNOWLEDGE TEST PREP</div>
+          <h1>Know the rules.<br /><span>Own the road.</span></h1>
+          <p class="hero-description">Practice with randomized questions drawn from the 2026 New Jersey Driver Manual. Get instant feedback, revisit skipped questions, and take as many fresh tests as you need.</p>
+          <button class="primary-button start-button" id="start-button" type="button">
+            Start a 50-question test <span aria-hidden="true">→</span>
+          </button>
+          <p class="fine-print">No sign-in. No timer. Unlimited attempts.</p>
+        </div>
+
+        <div class="exam-card" aria-label="Test rules">
+          <div class="exam-card-heading">
+            <div>
+              <span class="card-kicker">THE PRACTICE EXAM</span>
+              <h2>50 questions</h2>
+            </div>
+            <div class="card-icon" aria-hidden="true">✓</div>
+          </div>
+          <div class="score-rule pass-rule">
+            <div class="rule-icon">✓</div>
+            <div><strong>40 correct</strong><span>Automatic pass</span></div>
+            <b>80%</b>
+          </div>
+          <div class="score-rule fail-rule">
+            <div class="rule-icon">×</div>
+            <div><strong>11 incorrect</strong><span>Automatic fail</span></div>
+            <b>MAX</b>
+          </div>
+          <div class="exam-card-divider"></div>
+          <div class="feature-row"><span class="feature-symbol">↪</span><span><strong>Skip & return</strong><small>Skipped questions move to the end.</small></span></div>
+          <div class="feature-row"><span class="feature-symbol">⚡</span><span><strong>Instant feedback</strong><small>See the correct answer after each submission.</small></span></div>
+          <div class="feature-row"><span class="feature-symbol">∞</span><span><strong>Unlimited attempts</strong><small>A new randomized set every time.</small></span></div>
+          <div class="bank-note"><span id="bank-count">100+</span> questions in the practice bank</div>
+        </div>
+
+        <div class="welcome-footer">
+          <span>BASED ON THE 2026 NEW JERSEY DRIVER MANUAL</span>
+          <span>CHAPTERS 1–9 & DRIVER SAFETY APPENDIX</span>
+        </div>
+      </section>
+
+      <section class="quiz-view hidden" id="quiz-view">
+        <div class="quiz-topline">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> PRACTICE EXAM IN PROGRESS</div>
+            <h1 class="quiz-heading">Knowledge test</h1>
+          </div>
+          <button class="quiet-button" id="end-early-button" type="button" title="End this attempt">End test</button>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat-block"><span class="stat-label">CORRECT</span><strong class="stat-value stat-correct" id="correct-count">0</strong></div>
+          <div class="stat-block"><span class="stat-label">INCORRECT</span><strong class="stat-value stat-wrong" id="wrong-count">0</strong></div>
+          <div class="stat-block"><span class="stat-label">SKIPPED</span><strong class="stat-value" id="skipped-count">0</strong></div>
+          <div class="stat-block stat-answered"><span class="stat-label">ANSWERED</span><strong class="stat-value" id="answered-count">0<span class="stat-denominator"> / 50</span></strong></div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-meta"><span>Exam progress</span><span id="progress-label">0 of 50 answered</span></div>
+          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+          <div class="threshold-track">
+            <span class="threshold-pass">40 correct to pass</span>
+            <span class="threshold-fail">11 wrong = fail</span>
+          </div>
+        </div>
+
+        <article class="question-card" id="question-card">
+          <div class="question-meta">
+            <span class="question-number" id="question-number">QUESTION 01 / 50</span>
+            <span class="topic-tag" id="topic-tag">ROAD RULES</span>
+          </div>
+          <h2 id="question-text">Loading question...</h2>
+          <p class="question-instruction">Select one answer, then submit it to see your result.</p>
+          <div class="answer-list" id="answer-list" role="radiogroup" aria-label="Answer choices"></div>
+          <div class="feedback-panel hidden" id="feedback-panel" role="status" aria-live="polite"></div>
+          <div class="question-actions">
+            <button class="secondary-button" id="skip-button" type="button"><span aria-hidden="true">↪</span> Skip question</button>
+            <button class="primary-button submit-button" id="submit-button" type="button" disabled>Submit answer <span aria-hidden="true">→</span></button>
+            <button class="primary-button hidden" id="next-button" type="button">Next question <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="queue-note" id="queue-note">Skipped questions return at the end of the queue.</div>
+        </article>
+        <div class="quiz-bottom-note">Practice content is based on the uploaded 2026 NJ Driver Manual. This is not an official MVC exam.</div>
+      </section>
+
+      <section class="result-view hidden" id="result-view">
+        <div class="result-card">
+          <div class="result-icon" id="result-icon" aria-hidden="true">✓</div>
+          <div class="eyebrow result-eyebrow" id="result-eyebrow">EXAM COMPLETE</div>
+          <h1 id="result-title">You passed.</h1>
+          <p class="result-subtitle" id="result-subtitle">You reached the passing score.</p>
+          <div class="result-score-row">
+            <div class="result-score"><strong id="result-correct">40</strong><span>Correct</span></div>
+            <div class="result-score"><strong id="result-wrong">10</strong><span>Incorrect</span></div>
+            <div class="result-score"><strong id="result-answered">50</strong><span>Answered</span></div>
+          </div>
+          <div class="result-progress-track"><div class="result-progress-fill" id="result-progress-fill"></div></div>
+          <p class="result-detail" id="result-detail">You met the 40-correct passing requirement.</p>
+          <p class="result-last-answer hidden" id="result-last-answer"></p>
+          <div class="result-actions">
+            <button class="primary-button" id="new-test-button" type="button">Take another test <span aria-hidden="true">→</span></button>
+            <button class="secondary-button" id="home-button" type="button">Back to home</button>
+          </div>
+        </div>
+        <p class="result-disclaimer">Every new attempt selects 50 different questions from the practice bank. Questions may appear again on later attempts.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>UNOFFICIAL STUDY TOOL</span>
+      <span>DRIVE SMART. STAY SAFE.</span>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
