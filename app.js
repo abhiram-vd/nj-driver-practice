@@ -306,10 +306,13 @@ function renderQuestion() {
         : 'STATE EXAM PRACTICE'
     } `;
 
-  $('quiz-heading').textContent =
-    exam.mode === 'chapter'
+  const quizHeading = $('quiz-heading') || document.querySelector('.quiz-heading');
+
+  if (quizHeading) {
+    quizHeading.textContent = exam.mode === 'chapter'
       ? `Chapter ${exam.chapterNumber}: ${exam.chapterTitle}`
       : 'Knowledge test';
+  }
 
   $('progress-heading').textContent =
     exam.mode === 'chapter' ? 'Chapter progress' : 'Exam progress';
