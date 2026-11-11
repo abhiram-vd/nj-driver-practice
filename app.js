@@ -2,6 +2,7 @@
 
 // Questions are based on the uploaded 2026 New Jersey Driver Manual.
 // The page number in each explanation refers to the printed page number in the manual.
+
 const QUESTION_BANK = [
   // Licensing and GDL (Chapter 1)
   { id:'gdl01', topic:'Licensing & GDL', page:19, q:'What is the minimum age to obtain a New Jersey Special Learner Permit?', a:['15 years old','16 years old','17 years old','18 years old'], c:1, why:'The Special Learner Permit is available beginning at age 16, with parent or guardian consent and enrollment in an approved behind-the-wheel course.' },
@@ -83,8 +84,7 @@ const QUESTION_BANK = [
   { id:'rules34', topic:'Speed & Road Rules', page:85, q:'Which statement about handheld cell phone use while driving is correct?', a:['It is legal when moving under 25 mph','It is prohibited on public roads and is a primary offense','It is legal if the driver uses speakerphone','It is prohibited only for drivers under 21'], c:1, why:'The manual says handheld electronic-device use, including handheld calls and texting, is prohibited while driving on public roads and is a primary offense.' },
   { id:'rules35', topic:'Speed & Road Rules', page:85, q:'Under which circumstance may a driver use a handheld phone while operating a vehicle?', a:['To check traffic reports','To change a music playlist','In specified emergencies such as a fire, crash, serious road hazard, or medical emergency','Whenever the vehicle is stopped at a red light'], c:2, why:'The manual lists limited emergency situations, including fire, a traffic crash, serious road hazard, medical emergency, or hazardous-material emergency.' },
   { id:'rules36', topic:'Speed & Road Rules', page:87, q:'What does New Jersey law require for trash carried in a vehicle?', a:['It must be placed in the trunk','It must be covered so it does not litter the roadway','It may be discarded only on rural roads','It must be secured only when driving on highways'], c:1, why:'Trash and debris carried in a vehicle must be covered. Throwing litter from a moving or parked vehicle is illegal.' },
-
-  // Defensive driving (Chapter 5)
+    // Defensive driving (Chapter 5)
   { id:'def01', topic:'Defensive Driving', page:95, q:'What is the purpose of the three-second-plus following rule?', a:['To measure how long a traffic light stays green','To maintain a safe following distance','To determine when to change lanes','To estimate a vehicle’s top speed'], c:1, why:'The three-second-plus rule helps drivers maintain space and time to react if the vehicle ahead stops unexpectedly. More distance may be needed in poor conditions.' },
   { id:'def02', topic:'Defensive Driving', page:91, q:'Which set lists the four types of driving distractions described in the manual?', a:['Visual, manual, cognitive, and auditory','Physical, emotional, mechanical, and visual','Manual, spatial, chemical, and auditory','Visual, weather, mechanical, and mental'], c:0, why:'The four categories are visual (eyes), manual (hands), cognitive (mind/attention), and auditory (sound-related).' },
   { id:'def03', topic:'Defensive Driving', page:91, q:'A driver looks down to read a text message. Which distraction is directly involved?', a:['Visual and manual','Auditory only','Weather-related only','Mechanical only'], c:0, why:'Reading a text takes the driver’s eyes off the road (visual) and usually hands off the wheel (manual).' },
@@ -174,16 +174,19 @@ let exam = null;
 
 function shuffle(items) {
   const copy = [...items];
+
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [copy[i], copy[j]] = [copy[j], copy[i]];
   }
+
   return copy;
 }
 
 function prepareQuestion(question, number) {
   const optionOrder = shuffle([0, 1, 2, 3]);
   const options = optionOrder.map((originalIndex) => question.a[originalIndex]);
+
   return {
     id: question.id,
     topic: question.topic,
@@ -200,13 +203,18 @@ function showView(name) {
   Object.entries(views).forEach(([key, element]) => {
     element.classList.toggle('hidden', key !== name);
   });
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function startExam() {
-  const chosen = shuffle(QUESTION_BANK).slice(0, EXAM_SIZE);
-  const prepared = chosen.map((q, i) => prepareQuestion(q, i + 1));
+function beginPractice({ mode, questions, total, chapterNumber = null }) {
+  const prepared = questions.map((q, i) => prepareQuestion(q, i + 1));
+
   exam = {
+    mode,
+    total,
+    chapterNumber,
+    chapterTitle: chapterNumber ? CHAPTER_CONFIG[chapterNumber].short : null,
     queue: prepared,
     current: null,
     correct: 0,
@@ -217,168 +225,378 @@ function startExam() {
     feedbackShown: false,
     ended: false
   };
+
   exam.current = exam.queue.shift();
+
   showView('quiz');
   renderQuestion();
   updateStats();
 }
 
+function startExam() {
+  const chosen = shuffle(QUESTION_BANK).slice(0, EXAM_SIZE);
+
+  beginPractice({
+    mode: 'state',
+    questions: chosen,
+    total: EXAM_SIZE
+  });
+}
+
+function startChapterTest(chapterNumber) {
+  const number = Number(chapterNumber);
+  const config = CHAPTER_CONFIG[number];
+  const bank = CHAPTER_BANKS[number];
+
+  if (!config || !bank || bank.length !== 30) {
+    window.alert('This chapter practice set is unavailable. Please refresh the page.');
+    return;
+  }
+
+  beginPractice({
+    mode: 'chapter',
+    questions: shuffle(bank),
+    total: 30,
+    chapterNumber: number
+  });
+}
+
+function startAnotherPractice() {
+  if (exam && exam.mode === 'chapter') {
+    startChapterTest(exam.chapterNumber);
+  } else {
+    startExam();
+  }
+}
+
 function updateStats() {
   if (!exam) return;
+
   const answered = exam.correct + exam.wrong;
+
   $('correct-count').textContent = exam.correct;
   $('wrong-count').textContent = exam.wrong;
   $('skipped-count').textContent = exam.skipped;
-  $('answered-count').innerHTML = `${answered}<span class="stat-denominator"> / 50</span>`;
-  $('progress-label').textContent = `${answered} of 50 answered`;
-  $('progress-fill').style.width = `${Math.min(100, (answered / EXAM_SIZE) * 100)}%`;
+
+  $('answered-count').innerHTML =
+    `${answered}<span class="stat-denominator"> / ${exam.total}</span>`;
+
+  $('progress-label').textContent =
+    `${answered} of ${exam.total} answered`;
+
+  $('progress-fill').style.width =
+    `${Math.min(100, (answered / exam.total) * 100)}%`;
 }
 
 function renderQuestion() {
   if (!exam || exam.ended) return;
+
   const q = exam.current;
+
   exam.selectedIndex = null;
   exam.feedbackShown = false;
-  $('question-number').textContent = `QUESTION ${String(q.examNumber).padStart(2, '0')} / 50`;
+
+  $('question-number').textContent =
+    `QUESTION ${String(q.examNumber).padStart(2, '0')} / ${exam.total}`;
+
+  $('quiz-kicker').innerHTML =
+    `<span class="eyebrow-line"></span> ${
+      exam.mode === 'chapter'
+        ? `CHAPTER ${String(exam.chapterNumber).padStart(2, '0')} PRACTICE`
+        : 'STATE EXAM PRACTICE'
+    } `;
+
+  $('quiz-heading').textContent =
+    exam.mode === 'chapter'
+      ? `Chapter ${exam.chapterNumber}: ${exam.chapterTitle}`
+      : 'Knowledge test';
+
+  $('progress-heading').textContent =
+    exam.mode === 'chapter' ? 'Chapter progress' : 'Exam progress';
+
+  $('threshold-track').classList.toggle(
+    'hidden',
+    exam.mode === 'chapter'
+  );
+
+  $('end-early-button').textContent =
+    exam.mode === 'chapter' ? 'End practice' : 'End test';
+
   $('topic-tag').textContent = q.topic.toUpperCase();
   $('question-text').textContent = q.prompt;
+
   $('answer-list').innerHTML = '';
+
   $('feedback-panel').className = 'feedback-panel hidden';
   $('feedback-panel').innerHTML = '';
+
   $('submit-button').classList.remove('hidden');
   $('submit-button').disabled = true;
+
   $('next-button').classList.add('hidden');
   $('skip-button').disabled = false;
+
   q.options.forEach((answer, index) => {
     const button = document.createElement('button');
+
     button.type = 'button';
     button.className = 'answer-option';
     button.setAttribute('role', 'radio');
     button.setAttribute('aria-checked', 'false');
     button.dataset.index = String(index);
-    button.innerHTML = `<span class="answer-letter">${LETTERS[index]}</span><span class="answer-text"></span>`;
+
+    button.innerHTML =
+      `<span class="answer-letter">${LETTERS[index]}</span>
+       <span class="answer-text"></span>`;
+
     button.querySelector('.answer-text').textContent = answer;
+
     button.addEventListener('click', () => selectAnswer(index));
+
     $('answer-list').appendChild(button);
   });
+
   updateStats();
 }
 
 function selectAnswer(index) {
   if (!exam || exam.feedbackShown) return;
+
   exam.selectedIndex = index;
+
   [...$('answer-list').children].forEach((button, i) => {
     const selected = i === index;
+
     button.classList.toggle('selected', selected);
     button.setAttribute('aria-checked', String(selected));
   });
+
   $('submit-button').disabled = false;
 }
 
 function submitAnswer() {
   if (!exam || exam.feedbackShown || exam.selectedIndex === null) return;
+
   const q = exam.current;
   const chosen = exam.selectedIndex;
   const isCorrect = chosen === q.correctIndex;
+
   exam.feedbackShown = true;
   exam.answeredIds.add(q.id);
-  if (isCorrect) exam.correct += 1;
-  else exam.wrong += 1;
+
+  if (isCorrect) {
+    exam.correct += 1;
+  } else {
+    exam.wrong += 1;
+  }
 
   [...$('answer-list').children].forEach((button, i) => {
     button.disabled = true;
-    if (i === q.correctIndex) button.classList.add('correct-answer');
-    if (i === chosen && !isCorrect) button.classList.add('wrong-answer');
+
+    if (i === q.correctIndex) {
+      button.classList.add('correct-answer');
+    }
+
+    if (i === chosen && !isCorrect) {
+      button.classList.add('wrong-answer');
+    }
+
     if (i === q.correctIndex) {
       const marker = document.createElement('span');
+
       marker.className = 'answer-status';
       marker.textContent = '✓';
       marker.setAttribute('aria-label', 'Correct answer');
+
       button.appendChild(marker);
     }
   });
 
   const panel = $('feedback-panel');
-  panel.className = `feedback-panel ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`;
   const rightLetter = LETTERS[q.correctIndex];
+
   const answerLine = isCorrect
     ? `Your answer: ${rightLetter}. ${q.options[q.correctIndex]}`
     : `Correct answer: ${rightLetter}. ${q.options[q.correctIndex]}`;
+
+  panel.className =
+    `feedback-panel ${isCorrect ? 'feedback-correct' : 'feedback-wrong'}`;
+
   panel.innerHTML = `
-    <div class="feedback-heading"><span>${isCorrect ? '✓' : '×'}</span><span>${isCorrect ? 'Correct' : 'Not quite'}</span></div>
+    <div class="feedback-heading">
+      <span>${isCorrect ? '✓' : '×'}</span>
+      <span>${isCorrect ? 'Correct' : 'Not quite'}</span>
+    </div>
     <div class="feedback-answer"></div>
     <p class="feedback-explanation"></p>
-    <span class="feedback-source">2026 NJ DRIVER MANUAL · PAGE ${q.page}</span>`;
+    <span class="feedback-source">
+      2026 NJ DRIVER MANUAL · PAGE ${q.page}
+    </span>`;
+
   panel.querySelector('.feedback-answer').textContent = answerLine;
   panel.querySelector('.feedback-explanation').textContent = q.explanation;
 
   $('submit-button').classList.add('hidden');
   $('skip-button').disabled = true;
   $('next-button').classList.remove('hidden');
+
   updateStats();
 
-  if (exam.correct >= PASS_TARGET) {
-    finishExam('pass', 'You reached 40 correct answers, the required passing score.');
-  } else if (exam.wrong >= FAIL_LIMIT) {
-    finishExam('fail', 'You reached 11 incorrect answers, which is the automatic-fail limit.');
-  } else if (exam.answeredIds.size === EXAM_SIZE) {
-    finishExam(exam.correct >= PASS_TARGET ? 'pass' : 'fail', exam.correct >= PASS_TARGET
-      ? 'You answered at least 40 of 50 questions correctly.'
-      : 'You completed all 50 questions but did not reach 40 correct answers.');
+  // State examination automatic pass/fail rules.
+  if (exam.mode === 'state' && exam.correct >= PASS_TARGET) {
+    finishExam(
+      'pass',
+      'You reached 40 correct answers, the required passing score.'
+    );
+
+  } else if (exam.mode === 'state' && exam.wrong >= FAIL_LIMIT) {
+    finishExam(
+      'fail',
+      'You reached 11 incorrect answers, which is the automatic-fail limit.'
+    );
+
+  } else if (exam.answeredIds.size === exam.total) {
+
+    if (exam.mode === 'chapter') {
+      const percent = Math.round((exam.correct / exam.total) * 100);
+
+      finishExam(
+        'complete',
+        `You scored ${exam.correct} out of ${exam.total} (${percent}%).`
+      );
+
+    } else {
+      finishExam(
+        exam.correct >= PASS_TARGET ? 'pass' : 'fail',
+        exam.correct >= PASS_TARGET
+          ? 'You answered at least 40 of 50 questions correctly.'
+          : 'You completed all 50 questions but did not reach 40 correct answers.'
+      );
+    }
   }
 }
 
 function skipQuestion() {
   if (!exam || exam.feedbackShown) return;
+
+  // Put the skipped question at the end of the queue.
   exam.queue.push(exam.current);
   exam.skipped += 1;
-  if (exam.queue.length === 0) {
-    // This is only a safety fallback; normally the skipped question is now at the end.
-    exam.current = null;
-    finishExam('fail', 'No unanswered questions remain.');
-    return;
-  }
+
   exam.current = exam.queue.shift();
+
   renderQuestion();
 }
 
 function nextQuestion() {
   if (!exam || !exam.feedbackShown || exam.ended) return;
+
   if (exam.queue.length === 0) {
-    finishExam(exam.correct >= PASS_TARGET ? 'pass' : 'fail', 'You completed the question set.');
+
+    if (exam.mode === 'chapter') {
+      const percent = Math.round((exam.correct / exam.total) * 100);
+
+      finishExam(
+        'complete',
+        `You scored ${exam.correct} out of ${exam.total} (${percent}%).`
+      );
+
+    } else {
+      finishExam(
+        exam.correct >= PASS_TARGET ? 'pass' : 'fail',
+        'You completed the question set.'
+      );
+    }
+
     return;
   }
+
   exam.current = exam.queue.shift();
   renderQuestion();
 }
 
 function finishExam(outcome, detail) {
   if (!exam || exam.ended) return;
+
   exam.ended = true;
+
   const answered = exam.correct + exam.wrong;
+  const isChapter = exam.mode === 'chapter';
   const passed = outcome === 'pass';
-  $('result-icon').textContent = passed ? '✓' : '×';
-  $('result-icon').classList.toggle('fail', !passed);
-  $('result-eyebrow').textContent = passed ? 'PASSING SCORE REACHED' : 'AUTOMATIC FAIL';
-  $('result-title').textContent = passed ? 'You passed.' : 'Test not passed.';
-  $('result-subtitle').textContent = passed ? 'You reached the required passing score.' : 'You reached the incorrect-answer limit or finished below the passing score.';
+  const endedEarly = isChapter && outcome === 'incomplete';
+
+  $('result-icon').textContent =
+    (isChapter || passed) ? '✓' : '×';
+
+  $('result-icon').classList.toggle('fail', !isChapter && !passed);
+
+  if (isChapter) {
+    $('result-eyebrow').textContent =
+      endedEarly ? 'CHAPTER PRACTICE ENDED' : 'CHAPTER PRACTICE COMPLETE';
+
+    $('result-title').textContent =
+      endedEarly ? 'Practice ended.' : 'Chapter complete.';
+
+    $('result-subtitle').textContent =
+      `Chapter ${exam.chapterNumber}: ${exam.chapterTitle}`;
+
+    $('new-test-button').textContent =
+      `Retake Chapter ${exam.chapterNumber} practice →`;
+
+    $('result-detail').textContent =
+      detail || `You scored ${exam.correct} out of ${exam.total} (${Math.round((exam.correct / exam.total) * 100)}%).`;
+
+    $('result-disclaimer').textContent =
+      'Chapter practice includes all 30 questions in that chapter. Skipped questions are moved to the end of the queue.';
+
+  } else {
+    $('result-eyebrow').textContent =
+      passed ? 'PASSING SCORE REACHED' : 'AUTOMATIC FAIL';
+
+    $('result-title').textContent =
+      passed ? 'You passed.' : 'Test not passed.';
+
+    $('result-subtitle').textContent =
+      passed
+        ? 'You reached the required passing score.'
+        : 'You reached the incorrect-answer limit or finished below the passing score.';
+
+    $('new-test-button').textContent =
+      'Take another state exam →';
+
+    $('result-detail').textContent = detail;
+
+    $('result-disclaimer').textContent =
+      'Every new attempt selects 50 different questions from the practice bank. Questions may appear again on later attempts.';
+  }
+
   $('result-correct').textContent = exam.correct;
   $('result-wrong').textContent = exam.wrong;
   $('result-answered').textContent = answered;
-  $('result-progress-fill').style.width = `${(exam.correct / EXAM_SIZE) * 100}%`;
-  $('result-detail').textContent = detail;
+
+  $('result-progress-fill').style.width =
+    `${(exam.correct / exam.total) * 100}%`;
+
   const lastAnswer = $('result-last-answer');
+
   if (exam.feedbackShown && exam.current) {
-    const lastCorrect = exam.selectedIndex === exam.current.correctIndex;
+    const lastCorrect =
+      exam.selectedIndex === exam.current.correctIndex;
+
     const lastLine = lastCorrect
       ? 'Final answer: Correct.'
       : `Final answer: Incorrect. Correct answer: ${LETTERS[exam.current.correctIndex]}. ${exam.current.options[exam.current.correctIndex]}`;
-    lastAnswer.textContent = `${lastLine} ${exam.current.explanation} (2026 NJ Driver Manual, page ${exam.current.page}.)`;
+
+    lastAnswer.textContent =
+      `${lastLine} ${exam.current.explanation} (2026 NJ Driver Manual, page ${exam.current.page}.)`;
+
     lastAnswer.classList.remove('hidden');
+
   } else {
     lastAnswer.textContent = '';
     lastAnswer.classList.add('hidden');
   }
+
   showView('result');
 }
 
@@ -389,26 +607,61 @@ function goHome() {
 
 function init() {
   $('bank-count').textContent = `${QUESTION_BANK.length}`;
+
+  $('chapter-grid').addEventListener('click', (event) => {
+    const card = event.target.closest('[data-chapter]');
+
+    if (card) {
+      startChapterTest(card.dataset.chapter);
+    }
+  });
+
   $('start-button').addEventListener('click', startExam);
-  $('new-test-button').addEventListener('click', startExam);
+  $('new-test-button').addEventListener('click', startAnotherPractice);
   $('home-button').addEventListener('click', goHome);
   $('home-link').addEventListener('click', goHome);
-  $('brand-home').addEventListener('click', (event) => { event.preventDefault(); goHome(); });
+
+  $('brand-home').addEventListener('click', (event) => {
+    event.preventDefault();
+    goHome();
+  });
+
   $('submit-button').addEventListener('click', submitAnswer);
   $('skip-button').addEventListener('click', skipQuestion);
   $('next-button').addEventListener('click', nextQuestion);
+
   $('end-early-button').addEventListener('click', () => {
     if (!exam || exam.ended) return;
-    const confirmed = window.confirm('End this test now? Unanswered questions will not count as correct.');
-    if (confirmed) finishExam('fail', 'You ended this attempt before completing the question set.');
+
+    const confirmed = window.confirm(
+      exam.mode === 'chapter'
+        ? 'End this chapter practice now? Unanswered questions will not count toward your score.'
+        : 'End this test now? Unanswered questions will not count as correct.'
+    );
+
+    if (confirmed) {
+      finishExam(
+        exam.mode === 'chapter' ? 'incomplete' : 'fail',
+        exam.mode === 'chapter'
+          ? 'You ended this chapter practice before answering all 30 questions.'
+          : 'You ended this attempt before completing the question set.'
+      );
+    }
   });
+
   $('answer-list').addEventListener('keydown', (event) => {
     if (!exam || exam.feedbackShown) return;
+
     const key = event.key.toUpperCase();
     const index = LETTERS.indexOf(key);
+
     if (index >= 0) {
       const option = $('answer-list').children[index];
-      if (option) { event.preventDefault(); option.click(); }
+
+      if (option) {
+        event.preventDefault();
+        option.click();
+      }
     }
   });
 }

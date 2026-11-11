@@ -1,25 +1,47 @@
 # NJ Driver Knowledge Practice
 
-A static HTML/CSS/JavaScript practice website based on the uploaded **2026 New Jersey Driver Manual**.
+A free, browser-based New Jersey driver knowledge test practice website.
 
-## Run it
+Based on the 2026 New Jersey Driver Manual.
 
-1. Keep `index.html`, `styles.css`, and `app.js` in the same folder.
-2. Open `index.html` in a modern browser.
+## Practice modes
 
-No server, build step, account, or external JavaScript library is required. The stylesheet imports Manrope and DM Mono from Google Fonts; the site still works with system-font fallbacks if Google Fonts are unavailable.
+### State Exam Practice
+- 50 multiple-choice questions
+- Four answer choices (A–D)
+- 40 correct answers = automatic pass
+- 11 incorrect answers = automatic fail
+- Questions selected randomly
+- Answers shuffled
+- Instant feedback
+- Skipped questions return at the end
+- Unlimited attempts
 
-## Exam behavior
+### Chapter Practice
+- Chapters 1–9
+- 30 questions per chapter
+- 270 chapter-specific questions
+- Randomized question order
+- Shuffled answer choices
+- Immediate feedback and explanations
+- Manual page references
+- No automatic pass/fail threshold
+- Unlimited attempts
 
-- Each attempt selects 50 distinct questions at random from the question bank.
-- 40 correct answers ends the attempt as a pass.
-- 11 incorrect answers ends the attempt as an automatic fail.
-- A skipped question moves to the back of the queue and can be answered later.
-- Each submitted answer receives immediate feedback. Incorrect answers reveal the correct choice and a brief explanation.
-- The user can start unlimited new attempts. Questions can reappear on later attempts.
+## Technologies
 
-## Content scope
+- HTML5
+- CSS3
+- Vanilla JavaScript
 
-The question bank covers the regular automobile-driver material from the 2026 New Jersey Driver Manual: licensing and GDL, vehicle operation and safety, road rules, defensive driving, alcohol and drugs, sharing the road, signs and pavement markings, railroad crossings, and vehicle information. Each explanation includes the printed manual page number used as its source reference.
+No frameworks, backend, database, or installation required.
 
-This is an unofficial study aid, not an official MVC test or legal reference. The manual itself notes that statutes and regulations control if there is a discrepancy.
+## Project structure
+
+```text
+nj-driver-practice/
+├── index.html
+├── styles.css
+├── app.js
+├── chapter-bank.js
+└── README.md

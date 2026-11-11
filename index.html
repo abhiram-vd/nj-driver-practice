@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#101827" />
-  <meta name="description" content="Unlimited New Jersey driver knowledge test practice based on the 2026 NJ Driver Manual." />
+  <meta name="description" content="Unlimited New Jersey state-exam and chapter-by-chapter driver practice based on the 2026 NJ Driver Manual." />
   <title>NJ Driver Knowledge Practice</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -29,7 +29,11 @@
         <div class="hero-copy">
           <div class="eyebrow"><span class="eyebrow-line"></span> NEW JERSEY MVC · KNOWLEDGE TEST PREP</div>
           <h1>Know the rules.<br /><span>Own the road.</span></h1>
-          <p class="hero-description">Practice with randomized questions drawn from the 2026 New Jersey Driver Manual. Get instant feedback, revisit skipped questions, and take as many fresh tests as you need.</p>
+          <p class="hero-description">
+            Choose a 50-question state-exam simulation or focused
+            30-question tests for Chapters 1–9. Get instant feedback,
+            revisit skipped questions, and practice without limits.
+          </p>
           <button class="primary-button start-button" id="start-button" type="button">
             Start a 50-question test <span aria-hidden="true">→</span>
           </button>
@@ -44,22 +48,126 @@
             </div>
             <div class="card-icon" aria-hidden="true">✓</div>
           </div>
+
           <div class="score-rule pass-rule">
             <div class="rule-icon">✓</div>
             <div><strong>40 correct</strong><span>Automatic pass</span></div>
             <b>80%</b>
           </div>
+
           <div class="score-rule fail-rule">
             <div class="rule-icon">×</div>
             <div><strong>11 incorrect</strong><span>Automatic fail</span></div>
             <b>MAX</b>
           </div>
+
           <div class="exam-card-divider"></div>
-          <div class="feature-row"><span class="feature-symbol">↪</span><span><strong>Skip & return</strong><small>Skipped questions move to the end.</small></span></div>
-          <div class="feature-row"><span class="feature-symbol">⚡</span><span><strong>Instant feedback</strong><small>See the correct answer after each submission.</small></span></div>
-          <div class="feature-row"><span class="feature-symbol">∞</span><span><strong>Unlimited attempts</strong><small>A new randomized set every time.</small></span></div>
-          <div class="bank-note"><span id="bank-count">100+</span> questions in the practice bank</div>
+
+          <div class="feature-row">
+            <span class="feature-symbol">↪</span>
+            <span><strong>Skip & return</strong><small>Skipped questions move to the end.</small></span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-symbol">⚡</span>
+            <span><strong>Instant feedback</strong><small>See the correct answer after each submission.</small></span>
+          </div>
+          <div class="feature-row">
+            <span class="feature-symbol">∞</span>
+            <span><strong>Unlimited attempts</strong><small>A new randomized set every time.</small></span>
+          </div>
+
+          <div class="bank-note">
+            <span id="bank-count">100+</span> questions in the state-exam bank
+          </div>
         </div>
+
+        <section class="chapter-section" aria-labelledby="chapter-section-title">
+          <div class="chapter-section-head">
+            <div>
+              <div class="eyebrow"><span class="eyebrow-line"></span> STUDY BY CHAPTER</div>
+              <h2 id="chapter-section-title">Practice one chapter at a time.</h2>
+              <p>
+                Choose any chapter for a focused 30-question multiple-choice
+                test. These tests are separate from the 50-question
+                state-exam simulation.
+              </p>
+            </div>
+            <div class="chapter-total">
+              <strong>270</strong>
+              <span>CHAPTER QUESTIONS</span>
+            </div>
+          </div>
+
+          <div class="chapter-grid" id="chapter-grid">
+            <button class="chapter-card" type="button" data-chapter="1">
+              <span class="chapter-card-top"><span>CHAPTER 01</span><span>30 MCQ</span></span>
+              <strong>The New Jersey Driver License System</strong>
+              <small>Licenses, permits, REAL ID, and GDL</small>
+              <span class="chapter-pages">MANUAL PAGES 4–27 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="2">
+              <span class="chapter-card-top"><span>CHAPTER 02</span><span>30 MCQ</span></span>
+              <strong>New Jersey Driver Testing</strong>
+              <small>Knowledge, vision, and road tests</small>
+              <span class="chapter-pages">MANUAL PAGES 30–37 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="3">
+              <span class="chapter-card-top"><span>CHAPTER 03</span><span>30 MCQ</span></span>
+              <strong>Driver Responsibility</strong>
+              <small>Seat belts, vehicle operation, and care</small>
+              <span class="chapter-pages">MANUAL PAGES 40–59 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="4">
+              <span class="chapter-card-top"><span>CHAPTER 04</span><span>30 MCQ</span></span>
+              <strong>Safe Driving Rules and Regulations</strong>
+              <small>Speed, right-of-way, turning, and parking</small>
+              <span class="chapter-pages">MANUAL PAGES 62–87 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="5">
+              <span class="chapter-card-top"><span>CHAPTER 05</span><span>30 MCQ</span></span>
+              <strong>Defensive Driving</strong>
+              <small>Hazards, following distance, and emergencies</small>
+              <span class="chapter-pages">MANUAL PAGES 90–111 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="6">
+              <span class="chapter-card-top"><span>CHAPTER 06</span><span>30 MCQ</span></span>
+              <strong>Drinking, Drugs, and Health</strong>
+              <small>Impairment, BAC, and driver fitness</small>
+              <span class="chapter-pages">MANUAL PAGES 114–119 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="7">
+              <span class="chapter-card-top"><span>CHAPTER 07</span><span>30 MCQ</span></span>
+              <strong>Driver Privileges and Penalties</strong>
+              <small>Points, suspensions, and violations</small>
+              <span class="chapter-pages">MANUAL PAGES 122–140 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="8">
+              <span class="chapter-card-top"><span>CHAPTER 08</span><span>30 MCQ</span></span>
+              <strong>Sharing the Road with Others</strong>
+              <small>Pedestrians, bikes, trucks, and buses</small>
+              <span class="chapter-pages">MANUAL PAGES 144–155 <b>→</b></span>
+            </button>
+
+            <button class="chapter-card" type="button" data-chapter="9">
+              <span class="chapter-card-top"><span>CHAPTER 09</span><span>30 MCQ</span></span>
+              <strong>Vehicle Information</strong>
+              <small>Titles, registration, plates, and insurance</small>
+              <span class="chapter-pages">MANUAL PAGES 158–161 <b>→</b></span>
+            </button>
+          </div>
+
+          <p class="chapter-footnote">
+            Chapter tests use their own 30-question banks. They do not
+            trigger the state exam's 40-correct or 11-wrong thresholds.
+          </p>
+        </section>
 
         <div class="welcome-footer">
           <span>BASED ON THE 2026 NEW JERSEY DRIVER MANUAL</span>
@@ -70,23 +178,46 @@
       <section class="quiz-view hidden" id="quiz-view">
         <div class="quiz-topline">
           <div>
-            <div class="eyebrow"><span class="eyebrow-line"></span> PRACTICE EXAM IN PROGRESS</div>
+            <div class="eyebrow" id="quiz-kicker">
+              <span class="eyebrow-line"></span> PRACTICE EXAM IN PROGRESS
+            </div>
             <h1 class="quiz-heading">Knowledge test</h1>
           </div>
-          <button class="quiet-button" id="end-early-button" type="button" title="End this attempt">End test</button>
+          <button class="quiet-button" id="end-early-button" type="button" title="End this attempt">
+            End test
+          </button>
         </div>
 
         <div class="stats-strip">
-          <div class="stat-block"><span class="stat-label">CORRECT</span><strong class="stat-value stat-correct" id="correct-count">0</strong></div>
-          <div class="stat-block"><span class="stat-label">INCORRECT</span><strong class="stat-value stat-wrong" id="wrong-count">0</strong></div>
-          <div class="stat-block"><span class="stat-label">SKIPPED</span><strong class="stat-value" id="skipped-count">0</strong></div>
-          <div class="stat-block stat-answered"><span class="stat-label">ANSWERED</span><strong class="stat-value" id="answered-count">0<span class="stat-denominator"> / 50</span></strong></div>
+          <div class="stat-block">
+            <span class="stat-label">CORRECT</span>
+            <strong class="stat-value stat-correct" id="correct-count">0</strong>
+          </div>
+          <div class="stat-block">
+            <span class="stat-label">INCORRECT</span>
+            <strong class="stat-value stat-wrong" id="wrong-count">0</strong>
+          </div>
+          <div class="stat-block">
+            <span class="stat-label">SKIPPED</span>
+            <strong class="stat-value" id="skipped-count">0</strong>
+          </div>
+          <div class="stat-block stat-answered">
+            <span class="stat-label">ANSWERED</span>
+            <strong class="stat-value" id="answered-count">
+              0<span class="stat-denominator"> / 50</span>
+            </strong>
+          </div>
         </div>
 
         <div class="progress-section">
-          <div class="progress-meta"><span>Exam progress</span><span id="progress-label">0 of 50 answered</span></div>
-          <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-          <div class="threshold-track">
+          <div class="progress-meta">
+            <span id="progress-heading">Exam progress</span>
+            <span id="progress-label">0 of 50 answered</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="threshold-track" id="threshold-track">
             <span class="threshold-pass">40 correct to pass</span>
             <span class="threshold-fail">11 wrong = fail</span>
           </div>
@@ -97,18 +228,36 @@
             <span class="question-number" id="question-number">QUESTION 01 / 50</span>
             <span class="topic-tag" id="topic-tag">ROAD RULES</span>
           </div>
+
           <h2 id="question-text">Loading question...</h2>
-          <p class="question-instruction">Select one answer, then submit it to see your result.</p>
+          <p class="question-instruction">
+            Select one answer, then submit it to see your result.
+          </p>
+
           <div class="answer-list" id="answer-list" role="radiogroup" aria-label="Answer choices"></div>
           <div class="feedback-panel hidden" id="feedback-panel" role="status" aria-live="polite"></div>
+
           <div class="question-actions">
-            <button class="secondary-button" id="skip-button" type="button"><span aria-hidden="true">↪</span> Skip question</button>
-            <button class="primary-button submit-button" id="submit-button" type="button" disabled>Submit answer <span aria-hidden="true">→</span></button>
-            <button class="primary-button hidden" id="next-button" type="button">Next question <span aria-hidden="true">→</span></button>
+            <button class="secondary-button" id="skip-button" type="button">
+              <span aria-hidden="true">↪</span> Skip question
+            </button>
+            <button class="primary-button submit-button" id="submit-button" type="button" disabled>
+              Submit answer <span aria-hidden="true">→</span>
+            </button>
+            <button class="primary-button hidden" id="next-button" type="button">
+              Next question <span aria-hidden="true">→</span>
+            </button>
           </div>
-          <div class="queue-note" id="queue-note">Skipped questions return at the end of the queue.</div>
+
+          <div class="queue-note" id="queue-note">
+            Skipped questions return at the end of the queue.
+          </div>
         </article>
-        <div class="quiz-bottom-note">Practice content is based on the uploaded 2026 NJ Driver Manual. This is not an official MVC exam.</div>
+
+        <div class="quiz-bottom-note">
+          Practice content is based on the uploaded 2026 NJ Driver Manual.
+          This is not an official MVC exam.
+        </div>
       </section>
 
       <section class="result-view hidden" id="result-view">
@@ -117,20 +266,41 @@
           <div class="eyebrow result-eyebrow" id="result-eyebrow">EXAM COMPLETE</div>
           <h1 id="result-title">You passed.</h1>
           <p class="result-subtitle" id="result-subtitle">You reached the passing score.</p>
+
           <div class="result-score-row">
-            <div class="result-score"><strong id="result-correct">40</strong><span>Correct</span></div>
-            <div class="result-score"><strong id="result-wrong">10</strong><span>Incorrect</span></div>
-            <div class="result-score"><strong id="result-answered">50</strong><span>Answered</span></div>
+            <div class="result-score">
+              <strong id="result-correct">40</strong><span>Correct</span>
+            </div>
+            <div class="result-score">
+              <strong id="result-wrong">10</strong><span>Incorrect</span>
+            </div>
+            <div class="result-score">
+              <strong id="result-answered">50</strong><span>Answered</span>
+            </div>
           </div>
-          <div class="result-progress-track"><div class="result-progress-fill" id="result-progress-fill"></div></div>
-          <p class="result-detail" id="result-detail">You met the 40-correct passing requirement.</p>
+
+          <div class="result-progress-track">
+            <div class="result-progress-fill" id="result-progress-fill"></div>
+          </div>
+          <p class="result-detail" id="result-detail">
+            You met the 40-correct passing requirement.
+          </p>
           <p class="result-last-answer hidden" id="result-last-answer"></p>
+
           <div class="result-actions">
-            <button class="primary-button" id="new-test-button" type="button">Take another test <span aria-hidden="true">→</span></button>
-            <button class="secondary-button" id="home-button" type="button">Back to home</button>
+            <button class="primary-button" id="new-test-button" type="button">
+              Take another test <span aria-hidden="true">→</span>
+            </button>
+            <button class="secondary-button" id="home-button" type="button">
+              Back to home
+            </button>
           </div>
         </div>
-        <p class="result-disclaimer">Every new attempt selects 50 different questions from the practice bank. Questions may appear again on later attempts.</p>
+
+        <p class="result-disclaimer">
+          Every new attempt selects 50 different questions from the practice bank.
+          Questions may appear again on later attempts.
+        </p>
       </section>
     </main>
 
@@ -139,6 +309,8 @@
       <span>DRIVE SMART. STAY SAFE.</span>
     </footer>
   </div>
+
+  <script src="chapter-bank.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
