@@ -992,3 +992,102 @@ h1, h2, p { margin-top: 0; }
   .chapter-total strong { font-size: 23px; }
   .chapter-total span { font-size: 7px; text-align: right; }
 }
+
+/* Improved chapter selection cards */
+
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.chapter-card {
+  appearance: none;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 176px;
+  padding: 19px 20px 15px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+
+  background: linear-gradient(
+    145deg,
+    rgba(28, 43, 64, .94),
+    rgba(17, 29, 45, .96)
+  );
+
+  border: 1px solid rgba(181, 201, 228, .16);
+  border-radius: 14px;
+
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .10);
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  transition:
+    transform .16s ease,
+    border-color .16s ease,
+    background .16s ease,
+    box-shadow .16s ease;
+}
+
+.chapter-card:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(85, 223, 181, .65);
+
+  background: linear-gradient(
+    145deg,
+    rgba(34, 57, 76, .98),
+    rgba(18, 36, 49, .99)
+  );
+
+  box-shadow:
+    0 13px 30px rgba(0, 0, 0, .20),
+    0 0 0 1px rgba(85, 223, 181, .08);
+}
+
+.chapter-card:active {
+  transform: translateY(-1px) scale(.995);
+}
+
+.chapter-card:focus-visible {
+  outline: 3px solid rgba(85, 223, 181, .78);
+  outline-offset: 3px;
+}
+
+.chapter-card strong {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.chapter-card small {
+  font-size: 11px;
+  line-height: 1.6;
+  min-height: 32px;
+}
+
+@media (max-width: 950px) {
+  .chapter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .chapter-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .chapter-card {
+    min-height: 148px;
+  }
+}

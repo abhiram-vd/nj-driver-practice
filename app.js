@@ -608,12 +608,11 @@ function goHome() {
 function init() {
   $('bank-count').textContent = `${QUESTION_BANK.length}`;
 
-  $('chapter-grid').addEventListener('click', (event) => {
-    const card = event.target.closest('[data-chapter]');
-
-    if (card) {
+ // Attach a click event directly to every chapter card.
+  document.querySelectorAll('.chapter-card[data-chapter]').forEach((card) => {
+    card.addEventListener('click', () => {
       startChapterTest(card.dataset.chapter);
-    }
+    });
   });
 
   $('start-button').addEventListener('click', startExam);
